@@ -19,8 +19,10 @@ public class MarketPrice {
     private String symbol;
 
     @Column(name = "price")
-    private Integer price;
+    private Double price;
 
+    @Column(name = "version")
+    private Integer version;
 
     public MarketPrice() {
     }
@@ -33,11 +35,11 @@ public class MarketPrice {
         this.symbol = symbol;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -47,5 +49,13 @@ public class MarketPrice {
 
     public void setTime(Instant time) {
         this.time = time;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

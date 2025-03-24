@@ -6,7 +6,9 @@ import org.influxdb.dto.*;
 import org.influxdb.impl.InfluxDBResultMapper;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +42,7 @@ public class App {
                     .addField("symbol", "NVDA")
                     .addField("price", 12.2)
                     .addField("time", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+                    .addField("version", 1)
                     .build();
 
             final Point point2 = Point.measurement("market_price")
@@ -47,6 +50,15 @@ public class App {
                     .addField("symbol", "AMD")
                     .addField("price", 5.9)
                     .addField("time", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+                    .addField("version", 1)
+                    .build();
+
+            final MarketPrice marketPrice = new MarketPrice();
+            marketPrice.setVersion(2);
+            marketPrice.setPrice(7.1);
+            marketPrice.setSymbol("AMD");
+            final Point point3 = Point.measurementByPOJO(MarketPrice.class)
+                    .addFieldsFromPOJO(marketPrice)
                     .build();
 
             //BATCH POINTS, wrtie efficency
@@ -57,6 +69,7 @@ public class App {
 
             batchPoints.point(point1);
             batchPoints.point(point2);
+            batchPoints.point(point3);
 
             influxDB.write(batchPoints);
 
